@@ -1,8 +1,5 @@
 # Assets
 
-Esta pasta é destinada a recursos visuais do seu projeto:
+Recursos visuais do projeto Vero: diagramas de arquitetura e screenshots da aplicação em funcionamento.
 
-- Diagramas de arquitetura
-- Screenshots da aplicação
-- Mockups de interface
-- Imagens para o README
+O diagrama de arquitetura está em [`docs/01-documentacao-agente.md`](../docs/01-documentacao-agente.md#arquitetura), no formato Mermaid.

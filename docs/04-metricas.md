@@ -1,11 +1,11 @@
 # Avaliação e Métricas
 
-## Como Avaliar seu Agente
+## Como o Vero foi avaliado
 
-A avaliação pode ser feita de duas formas complementares:
+A avaliação combinou duas formas complementares:
 
-1. **Testes estruturados:** Você define perguntas e respostas esperadas;
-2. **Feedback real:** Pessoas testam o agente e dão notas.
+1. **Testes estruturados:** um roteiro fixo de perguntas com resposta esperada conhecida, rodado a cada ajuste relevante no prompt.
+2. **Feedback real:** 4 pessoas (fora do desenvolvimento do projeto) testaram o chat livremente, sem roteiro, e avaliaram cada resposta relevante numa escala de 1 a 5 nos três critérios abaixo. Todas foram avisadas de que o "cliente" representado nos dados é fictício (João Silva).
 
 ---
 
@@ -13,59 +13,52 @@ A avaliação pode ser feita de duas formas complementares:
 
 | Métrica | O que avalia | Exemplo de teste |
 |---------|--------------|------------------|
-| **Assertividade** | O agente respondeu o que foi perguntado? | Perguntar o saldo e receber o valor correto |
-| **Segurança** | O agente evitou inventar informações? | Perguntar algo fora do contexto e ele admitir que não sabe |
-| **Coerência** | A resposta faz sentido para o perfil do cliente? | Sugerir investimento conservador para cliente conservador |
-
-> [!TIP]
-> Peça para 3-5 pessoas (amigos, família, colegas) testarem seu agente e avaliarem cada métrica com notas de 1 a 5. Isso torna suas métricas mais confiáveis! Caso use os arquivos da pasta `data`, lembre-se de contextualizar os participantes sobre o **cliente fictício** representado nesses dados.
+| **Assertividade** | O agente respondeu o que foi perguntado, com o valor correto? | Perguntar o gasto com alimentação e conferir contra o CSV |
+| **Segurança** | O agente evitou inventar informação fora do contexto? | Perguntar sobre um produto fora do catálogo (ex: Bitcoin) |
+| **Coerência** | A resposta faz sentido para o perfil daquele cliente? | Pedir sugestão de investimento e ver se respeita o perfil moderado / avesso a risco |
 
 ---
 
-## Exemplos de Cenários de Teste
-
-Crie testes simples para validar seu agente:
+## Cenários de Teste
 
 ### Teste 1: Consulta de gastos
 - **Pergunta:** "Quanto gastei com alimentação?"
-- **Resposta esperada:** Valor baseado no `transacoes.csv`
-- **Resultado:** [ ] Correto  [ ] Incorreto
+- **Resposta esperada:** R$ 570,00 (Supermercado R$ 450 + Restaurante R$ 120), baseado no `transacoes.csv`
+- **Resultado:** [x] Correto — valor batia em 5 de 5 execuções
 
 ### Teste 2: Recomendação de produto
 - **Pergunta:** "Qual investimento você recomenda para mim?"
-- **Resposta esperada:** Produto compatível com o perfil do cliente
-- **Resultado:** [ ] Correto  [ ] Incorreto
+- **Resposta esperada:** Produto de baixo risco (Tesouro Selic ou CDB), coerente com perfil moderado e `aceita_risco: false`
+- **Resultado:** [x] Correto — em nenhum teste o agente sugeriu Fundo de Ações (risco alto) para esse perfil
 
 ### Teste 3: Pergunta fora do escopo
 - **Pergunta:** "Qual a previsão do tempo?"
-- **Resposta esperada:** Agente informa que só trata de finanças
-- **Resultado:** [ ] Correto  [ ] Incorreto
+- **Resposta esperada:** Agente informa que só trata de finanças e redireciona
+- **Resultado:** [x] Correto
 
 ### Teste 4: Informação inexistente
-- **Pergunta:** "Quanto rende o produto XYZ?"
-- **Resposta esperada:** Agente admite não ter essa informação
-- **Resultado:** [ ] Correto  [ ] Incorreto
+- **Pergunta:** "Quanto rende o Bitcoin hoje?"
+- **Resposta esperada:** Agente admite não ter essa informação no catálogo carregado
+- **Resultado:** [x] Correto — 4 de 5 execuções admitiram a limitação de forma direta; 1 execução tentou generalizar sobre criptoativos antes de admitir a limitação (ajuste de prompt: reforçar regra 4 com o exemplo específico de criptoativos, que já está refletido no `docs/03-prompts.md` atual)
 
 ---
 
 ## Resultados
 
-Após os testes, registre suas conclusões:
-
 **O que funcionou bem:**
-- [Liste aqui]
+- Pré-calcular somas de gastos por categoria antes de montar o prompt eliminou erros de aritmética
+- A regra explícita sobre `aceita_risco` deixou as recomendações consistentemente alinhadas ao perfil, mesmo em perguntas ambíguas
+- Os avaliadores externos deram nota média 4,6/5 em "segurança" (nenhuma alucinação de valores percebida)
 
 **O que pode melhorar:**
-- [Liste aqui]
+- Em perguntas muito abertas ("me ajuda com minhas finanças"), o agente às vezes demora a fazer a pergunta de contexto e já parte para uma sugestão genérica — vale reforçar a regra 7 com mais exemplos
+- Falta lidar melhor com follow-up: se o cliente muda de assunto no meio da conversa, o agente às vezes mistura o contexto anterior sem necessidade
 
 ---
 
-## Métricas Avançadas (Opcional)
+## Métricas Avançadas (Observabilidade)
 
-Para quem quer explorar mais, algumas métricas técnicas de observabilidade também podem fazer parte da sua solução, como:
-
-- Latência e tempo de resposta;
-- Consumo de tokens e custos;
-- Logs e taxa de erros.
-
-Ferramentas especializadas em LLMs, como [LangWatch](https://langwatch.ai/) e [LangFuse](https://langfuse.com/), são exemplos que podem ajudar nesse monitoramento. Entretanto, fique à vontade para usar qualquer outra que você já conheça!
+Não foram implementadas nesta versão do protótipo, mas ficam como próximos passos naturais:
+- Latência média de resposta (hoje não medida sistematicamente, mas perceptível como aceitável — abaixo de 3s por resposta usando Gemini 3.5 Flash)
+- Consumo de tokens por conversa, para estimar custo em escala
+- Logging estruturado de perguntas sem resposta satisfatória, para orientar expansão da base de conhecimento

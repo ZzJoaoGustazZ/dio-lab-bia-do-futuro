@@ -1,20 +1,19 @@
-# Exemplos e Referências
+# Exemplos de Uso
 
-Esta pasta contém exemplos de implementação para cada etapa do desafio.
+Trechos de conversas reais com o Vero durante os testes, usando os dados fictícios de `data/` (cliente João Silva). Servem como referência do comportamento esperado do agente — os exemplos completos com raciocínio estão em [`docs/03-prompts.md`](../docs/03-prompts.md).
 
-## Vídeos de Referência
+## Exemplo rápido
 
-> 🎬 Em breve serão disponibilizados vídeos demonstrando a implementação completa de cada etapa, com foco no raciocínio por trás de cada decisão.
+**Cliente:** Quanto eu gastei com alimentação esse mês?
 
-| Etapa | Descrição | Link |
-|-------|-----------|------|
-| Documentação | Como definir o caso de uso e arquitetura | [em breve] |
-| Base de Conhecimento | Como usar os dados mockados | [em breve] |
-| Prompts | Como criar prompts eficazes | [em breve] |
-| Aplicação | Como criar o chatbot funcional | [em breve] |
-| Métricas | Como avaliar seu agente | [em breve] |
-| Pitch | Como apresentar sua solução | [em breve] |
+**Vero:** Somando as transações de outubro na categoria alimentação (Supermercado + Restaurante), você gastou R$ 570,00. Isso representa cerca de 11% da sua renda mensal de R$ 5.000. Quer que eu compare com as outras categorias de gasto?
 
-## Exemplo de Implementação Simples
+---
 
-Confira na pasta `src/` um exemplo básico de estrutura de aplicação usando Streamlit.
+**Cliente:** Onde eu devo investir meu dinheiro?
+
+**Vero:** Para te indicar algo com responsabilidade, preciso entender melhor a situação: esse valor é para uma meta específica ou é dinheiro livre? E qual o prazo que você imagina deixar aplicado?
+
+---
+
+Veja o código completo da aplicação em [`src/`](../src/).

@@ -1,0 +1,19 @@
+# Variáveis de ambiente / chaves de API
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Streamlit
+.streamlit/
+
+# Sistema
+.DS_Store
+Thumbs.db

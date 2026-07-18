@@ -1,31 +1,22 @@
-# Código da Aplicação
+# src — Aplicação do Vero
 
-Esta pasta contém o código do seu agente financeiro.
-
-## Estrutura Sugerida
+Código do agente financeiro Vero.
 
 ```
 src/
-├── app.py              # Aplicação principal (Streamlit/Gradio)
-├── agente.py           # Lógica do agente
-├── config.py           # Configurações (API keys, etc.)
-└── requirements.txt    # Dependências
+├── app.py              # Interface de chat (Streamlit)
+├── agente.py           # Carregamento de dados, montagem de contexto e chamada ao LLM
+├── config.py            # Configuração e variáveis de ambiente
+├── requirements.txt
+└── .env.example
 ```
 
-## Exemplo de requirements.txt
-
-```
-streamlit
-openai
-python-dotenv
-```
-
-## Como Rodar
+## Como rodar
 
 ```bash
-# Instalar dependências
 pip install -r requirements.txt
-
-# Rodar a aplicação
+cp .env.example .env   # preencha GEMINI_API_KEY (gere em aistudio.google.com/apikey)
 streamlit run app.py
 ```
+
+O agente carrega automaticamente os dados fictícios de `../data/` (cliente João Silva) e responde apenas com base neles — veja as regras completas em `../docs/03-prompts.md`.
