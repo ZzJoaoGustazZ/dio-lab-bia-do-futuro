@@ -92,4 +92,4 @@ streamlit run app.py
 
 ## Licença e autoria
 
-Projeto desenvolvido de forma independente como estudo de agentes de IA aplicados ao setor financeiro. Os dados em `data/` são fictícios, criados para fins de demonstração.
+Projeto desenvolvido durante o Bootcamp Bradesco - GenAI, Dados & Cyber, utilizando uma implementação base fornecida pela DIO. O projeto foi posteriormente modificado e personalizado por mim, mantendo grande parte da estrutura original. Os dados em data/ são fictícios e utilizados para fins de demonstração.
